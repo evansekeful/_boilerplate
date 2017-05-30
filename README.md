@@ -1,10 +1,11 @@
-##_boilerplate
+_boilerplate
 
 A Work in Progress
 
-#TODO
+TODO
 
 * Add Modernizr Build to gulpfile
+* Pipe plugins.js in gulpfile
 * Add Babel to gulpfile
 * Add Copyright date to package.json
 * Add package copyright to header
