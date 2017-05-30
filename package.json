@@ -1,7 +1,7 @@
 {
   "name": "_boilerplate",
   "version": "1.0.0",
-  "description": "A starter website using Bootstrap, Yarn, & Gulp.",
+  "description": "A starter HTML site using Bootstrap, Yarn, & Gulp.",
   "main": "index.html",
   "author": "Elizabeth Evans",
   "license": "MIT",
