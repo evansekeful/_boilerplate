@@ -4,13 +4,13 @@ var header = require('gulp-header');
 var cleancss = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-var filter = require('gulp-filter');
+//var filter = require('gulp-filter');
 var pkg = require('./package.json');
 
 // Set the banner content
 var banner = ['/*!\n',
     ' * <%= pkg.title %>: A Beastie Supported Production\n', 
-    ' * Copyright 2013 -' + (new Date()).getFullYear(), ' <%= pkg.author %>\n', // TODO add copyright date to json and use here
+    ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n', // TODO add copyright date to json and use here
     ' * Licensed under <%= pkg.license %> \n',
     ' */\n',
     ''
