@@ -1,64 +1,54 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
-var browserSync = require('browser-sync').create();
 var header = require('gulp-header');
-var cleanCSS = require('gulp-clean-css');
-var rename = require("gulp-rename");
+var cleancss = require('gulp-clean-css');
+var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var filter = require('gulp-filter');
 var pkg = require('./package.json');
 
 // Set the banner content
 var banner = ['/*!\n',
-    ' * Start Bootstrap: Solnimbus\n', // TODO add Project "title" to json and use here
+    ' * <%= pkg.title %>: A Beastie Supported Production\n', 
     ' * Copyright 2013 -' + (new Date()).getFullYear(), ' <%= pkg.author %>\n', // TODO add copyright date to json and use here
-    ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n',
+    ' * Licensed under <%= pkg.license %> \n',
     ' */\n',
     ''
 ].join('');
 
-// Compile SASS files from /sass into /css TODO properly port this function to sass
+// Compile SASS files from /sass into /css
 gulp.task('sass', function() {
     return gulp.src('sass/main.scss')
-        .pipe(less())
+        .pipe(sass())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest('css'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
 });
 
 // Build Modernizr JS TODO
 
 
 // Minify compiled CSS TODO verify file paths; write to HTML file
-gulp.task('minify-css', ['sass'], function() {
-    return gulp.src('css/creative.css')
-        .pipe(cleanCSS({ compatibility: 'ie8' }))
+gulp.task('minify-css', gulp.series('sass', function() {
+    return gulp.src('css/main.css')
+        .pipe(cleancss({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('css'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
-});
+}));
 
 // Babel JS TODO
 
 
 // Minify JS TODO verify file paths; write to HTML file
 gulp.task('minify-js', function() {
-    return gulp.src('js/creative.js')
+    return gulp.src('js/main.js')
         .pipe(uglify())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('js'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
 });
 
 // Copy vendor libraries from /node_modules into /vendor TODO verify file paths; write to HTML file
-gulp.task('copy', function() {
+gulp.task('copy', async function() {
     // Bootstrap
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
         .pipe(gulp.dest('vendor/bootstrap'))
@@ -83,23 +73,5 @@ gulp.task('copy', function() {
 })
 
 // Run everything
-gulp.task('default', ['less', 'minify-css', 'minify-js', 'copy']);
+gulp.task('default', gulp.parallel('sass', 'minify-css', 'minify-js', 'copy'));
 
-// Configure the browserSync task TODO pipe nodemon
-gulp.task('browserSync', function() {
-    browserSync.init({
-        server: {
-            baseDir: ''
-        },
-    })
-})
-
-// Dev task with browserSync
-gulp.task('dev', ['browserSync', 'less', 'minify-css', 'minify-js'], function() {
-    gulp.watch('less/*.less', ['less']);
-    gulp.watch('css/*.css', ['minify-css']);
-    gulp.watch('js/*.js', ['minify-js']);
-    // Reloads the browser whenever HTML or JS files change
-    gulp.watch('*.html', browserSync.reload);
-    gulp.watch('js/**/*.js', browserSync.reload);
-});
