@@ -87,12 +87,14 @@ gulp.task('html', gulp.series('concat', function() {
     .pipe(gulp.dest('./_dist'))
 }));
 
-// Copy fonts, images, and vendor libraries into /_dist TODO fonts, images
+// Copy fonts, images, and vendor libraries into /_dist
 gulp.task('copy', async function() {
     // Images
-
+    gulp.src('./_src/img/*')
+        .pipe(gulp.dest('./_dist/img'))
     // Fonts
-
+    gulp.src('./_src/css/fonts/*')
+        .pipe(gulp.dest('./_dist/css/fonts'))
     // Bootstrap
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
         .pipe(gulp.dest('./_dist/vendor/bootstrap'))
@@ -119,7 +121,6 @@ gulp.task('copy', async function() {
 })
 
 // Run everything
-gulp.task('default', gulp.parallel('fonts','sass', 'minify-css', 'minify-js', 'concat', 'html','copy'));
-
-// Tests
-
+gulp.task('default', 
+    gulp.parallel('fonts','sass', 'minify-css', 'minify-js', 'concat', 'html','copy')
+    );
