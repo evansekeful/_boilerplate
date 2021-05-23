@@ -4,7 +4,6 @@ var header = require('gulp-header');
 var cleancss = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-//var filter = require('gulp-filter');
 var pkg = require('./package.json');
 
 // Set the banner content
@@ -24,7 +23,7 @@ gulp.task('sass', function() {
         .pipe(gulp.dest('_src/css'))
 });
 
-// Minify compiled CSS TODO verify file paths; write to HTML file
+// Minify compiled CSS TODO write to HTML file
 gulp.task('minify-css', gulp.series('sass', function() {
     return gulp.src('_src/css/main.css')
         .pipe(cleancss({ compatibility: 'ie8' }))
@@ -32,7 +31,7 @@ gulp.task('minify-css', gulp.series('sass', function() {
         .pipe(gulp.dest('_dist/css'))
 }));
 
-// Minify JS TODO add plugins file; verify file paths; write to HTML file
+// Minify JS TODO add plugins file; write to HTML file
 gulp.task('minify-js', function() {
     return gulp.src('_src/js/main.js')
         .pipe(uglify())
@@ -41,7 +40,10 @@ gulp.task('minify-js', function() {
         .pipe(gulp.dest('_dist/js'))
 });
 
-// Copy vendor libraries from /node_modules into /vendor TODO verify file paths; write to HTML file
+// Write HTML files
+
+
+// Copy staged HTML and vendor libraries from /node_modules into /vendor
 gulp.task('copy', async function() {
     // Bootstrap
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
@@ -50,9 +52,11 @@ gulp.task('copy', async function() {
     gulp.src(['node_modules/jquery/dist/jquery.js', 'node_modules/jquery/dist/jquery.min.js'])
         .pipe(gulp.dest('_dist/vendor/jquery'))
     // Normalize
-
+    gulp.src('node_modules/normalize.css/normalize.css')
+        .pipe(gulp.dest('_dist/vendor/normalize'))
     // Modernizr
-
+    gulp.src('node_modules/modernizr/lib/**/*')
+        .pipe(gulp.dest('_dist/vendor/modernizr'))
     // ...add more
 
     gulp.src([
@@ -65,16 +69,6 @@ gulp.task('copy', async function() {
         ])
         .pipe(gulp.dest('_dist/vendor/font-awesome'))
 })
-
-// Set document head content
-
-// Set page load scripts
-
-// Write header to html files
-
-
-// Write page load scripts to html files
-
 
 // Run everything
 gulp.task('default', gulp.parallel('sass', 'minify-css', 'minify-js', 'copy'));
