@@ -18,7 +18,7 @@ var banner = ['/*!\n',
 
 // Compile SASS files from /sass into /css
 gulp.task('sass', function() {
-    return gulp.src('sass/main.scss')
+    return gulp.src('_src/sass/main.scss')
         .pipe(sass())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest('css'))
@@ -26,19 +26,15 @@ gulp.task('sass', function() {
 
 // Minify compiled CSS TODO verify file paths; write to HTML file
 gulp.task('minify-css', gulp.series('sass', function() {
-    return gulp.src('css/main.css')
+    return gulp.src('_src/css/main.css')
         .pipe(cleancss({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('css'))
 }));
 
-// Babel JS TODO
-
-// Build Modernizr JS TODO
-
 // Minify JS TODO add plugins file; verify file paths; write to HTML file
 gulp.task('minify-js', function() {
-    return gulp.src('js/main.js')
+    return gulp.src('_src/js/main.js')
         .pipe(uglify())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
@@ -69,6 +65,16 @@ gulp.task('copy', async function() {
         ])
         .pipe(gulp.dest('vendor/font-awesome'))
 })
+
+// Set document head content
+
+// Set page load scripts
+
+// Write header to html files
+
+
+// Write page load scripts to html files
+
 
 // Run everything
 gulp.task('default', gulp.parallel('sass', 'minify-css', 'minify-js', 'copy'));
