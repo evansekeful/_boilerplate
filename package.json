@@ -12,6 +12,7 @@
   "devDependencies": {
     "browser-sync": "^2.18.12",
     "cross-spawn": "^5.1.0",
+    "del": "^6.0.0",
     "glob": "^7.1.7",
     "glob-stream": "^6.1.0",
     "gulp": "^4.0.2",

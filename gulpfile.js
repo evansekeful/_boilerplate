@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var header = require('gulp-header');
+var del = require('del');
 var fonts = require('gulp-google-webfonts');
 var sass = require('gulp-sass');
 var cleancss = require('gulp-clean-css');
@@ -27,6 +28,7 @@ var fontoptions = {
 };
 
 gulp.task('fonts', function() {
+    del.sync('./_src/css/fonts');
     return gulp.src('./fonts.list')
         .pipe(fonts(fontoptions))
         .pipe(gulp.dest('./_src/css'));
