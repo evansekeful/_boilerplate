@@ -43,8 +43,8 @@ gulp.task('sass', function() {
 gulp.task('minify-css', gulp.series('fonts','sass', function() {
     return gulp.src('./_src/css/*.css')
         .pipe(concat('main.css'))
-        .pipe(header(banner, { pkg: pkg }))
         .pipe(cleancss({ compatibility: 'ie8' }))
+        .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('./_dist/css'))
 }));
