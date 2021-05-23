@@ -1,9 +1,14 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
 var header = require('gulp-header');
+var fonts = require('gulp-google-webfonts');
+var sass = require('gulp-sass');
 var cleancss = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
+var tap = require('gulp-tap');
+var concat = require('gulp-concat');
+var inject = require('gulp-inject');
+var ga = require('gulp-ga');
 var pkg = require('./package.json');
 
 // Set the banner content
@@ -15,7 +20,20 @@ var banner = ['/*!\n',
     ''
 ].join('');
 
-// Compile SASS files from /sass into /css
+// Generate fonts css and copy into /_src/css
+var fontoptions = {
+    fontsDir: '_dist/fonts',
+    cssDir: '_src/css',
+    cssFilename: 'google-fonts.css'
+};
+
+gulp.task('fonts', function() {
+    return gulp.src('./fonts.list')
+        .pipe(fonts(fontoptions))
+        .pipe(gulp.dest('_src/css'));
+});
+
+// Compile SASS files from /_src/sass into /_src/css
 gulp.task('sass', function() {
     return gulp.src('_src/sass/main.scss')
         .pipe(sass())
@@ -23,27 +41,47 @@ gulp.task('sass', function() {
         .pipe(gulp.dest('_src/css'))
 });
 
-// Minify compiled CSS TODO write to HTML file
-gulp.task('minify-css', gulp.series('sass', function() {
-    return gulp.src('_src/css/main.css')
+// Minify compiled CSS and copy into /_dist/css TODO write to HTML file
+gulp.task('minify-css', gulp.series('fonts','sass', function() {
+    return gulp.src(['_src/css/main.css','_src/css/google-fonts.css'])
+        .pipe(concat('main.css'))
         .pipe(cleancss({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('_dist/css'))
 }));
 
-// Minify JS TODO add plugins file; write to HTML file
+// Minify JS and copy into /_dist/js TODO write to HTML file
 gulp.task('minify-js', function() {
-    return gulp.src('_src/js/main.js')
+    return gulp.src(['_src/js/main.js','_src/js/plugins.js'])
+        .pipe(concat('main.js'))
         .pipe(uglify())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('_dist/js'))
 });
 
-// Write HTML files
+// Concatenate HTML partials
+gulp.task('concat', function() {
+    return gulp.src('_src/html/content/*.hmtl')
+    .pipe(tap(function (file) {
+        file.contents = Buffer.concat(
+            new Buffer(gulp.src('_src/html/partials/header.html')),
+            file.contents,
+            new Buffer(gulp.src('_src/html/partials/footer.html'))
+        )
+      }))
+    .pipe(gulp.dest('_src/html/staged'))
+});
 
+// Write HTML files and copy into /_dist
+gulp.task('html', gulp.series('concat', function() {
+    return gulp.src('_src/html/staged/*.html')
+    .pipe(header(banner, { pkg: pkg }))
+    .pipe(ga({url: pkg.url, uid: pkg.ga}))
+    .pipe(gulp.dest('_dist'))
+}));
 
-// Copy staged HTML and vendor libraries from /node_modules into /vendor
+// Copy staged HTML and vendor libraries from /node_modules into /_dist/vendor
 gulp.task('copy', async function() {
     // Bootstrap
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
@@ -71,5 +109,5 @@ gulp.task('copy', async function() {
 })
 
 // Run everything
-gulp.task('default', gulp.parallel('sass', 'minify-css', 'minify-js', 'copy'));
+gulp.task('default', gulp.parallel('sass', 'minify-css', 'minify-js', 'html','copy'));
 
