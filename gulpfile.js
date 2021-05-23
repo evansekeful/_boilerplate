@@ -10,7 +10,7 @@ var pkg = require('./package.json');
 // Set the banner content
 var banner = ['/*!\n',
     ' * <%= pkg.title %>: A Beastie Supported Production\n', 
-    ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n',
+    ' * Copyright 2017-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n',
     ' * Licensed under <%= pkg.license %> \n',
     ' */\n',
     ''
@@ -21,7 +21,7 @@ gulp.task('sass', function() {
     return gulp.src('_src/sass/main.scss')
         .pipe(sass())
         .pipe(header(banner, { pkg: pkg }))
-        .pipe(gulp.dest('css'))
+        .pipe(gulp.dest('_src/css'))
 });
 
 // Minify compiled CSS TODO verify file paths; write to HTML file
@@ -29,7 +29,7 @@ gulp.task('minify-css', gulp.series('sass', function() {
     return gulp.src('_src/css/main.css')
         .pipe(cleancss({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('css'))
+        .pipe(gulp.dest('_dist/css'))
 }));
 
 // Minify JS TODO add plugins file; verify file paths; write to HTML file
@@ -38,17 +38,17 @@ gulp.task('minify-js', function() {
         .pipe(uglify())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('js'))
+        .pipe(gulp.dest('_dist/js'))
 });
 
 // Copy vendor libraries from /node_modules into /vendor TODO verify file paths; write to HTML file
 gulp.task('copy', async function() {
     // Bootstrap
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
-        .pipe(gulp.dest('vendor/bootstrap'))
+        .pipe(gulp.dest('_dist/vendor/bootstrap'))
     // jQuery
     gulp.src(['node_modules/jquery/dist/jquery.js', 'node_modules/jquery/dist/jquery.min.js'])
-        .pipe(gulp.dest('vendor/jquery'))
+        .pipe(gulp.dest('_dist/vendor/jquery'))
     // Normalize
 
     // Modernizr
@@ -63,7 +63,7 @@ gulp.task('copy', async function() {
             '!node_modules/font-awesome/*.md',
             '!node_modules/font-awesome/*.json'
         ])
-        .pipe(gulp.dest('vendor/font-awesome'))
+        .pipe(gulp.dest('_dist/vendor/font-awesome'))
 })
 
 // Set document head content
