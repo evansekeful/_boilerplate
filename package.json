@@ -1,5 +1,5 @@
 {
-  "name": "beastie-boilerplate",
+  "name": "boilerplate",
   "version": "1.0.0",
   "description": "A starter HTML site using Bootstrap, SASS, & Gulp.",
   "main": "_dist/index.html",

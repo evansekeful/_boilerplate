@@ -4,14 +4,9 @@ A Work in Progress
 
 TODO
 
-* Validate functionality of upgraded dependencies
-* Add Modernizr Build to gulpfile
-* Pipe plugins.js in gulpfile
-* Add Babel to gulpfile
-* Add package title to header
 * Write vendor paths to index in gulpfile for easy version updates
-* Add Google snippet to Gulp with code in package.json
-* Update dependency install instructions to README
+* Update dependency install instructions and links in README
+* Update alternative gulfile JS for common scenarios
 
 ## The Why
 While I understand the appeal of fancy tooling and frameworks, my development philosophy is to only use them when needed. Most websites don't require anything on the backend and static websites are cheaper to host. Static sites are also a great entry point for starting to use serverless development, which as an MBA I prefer on principle.
