@@ -63,7 +63,7 @@ gulp.task('minify-js', function() {
 // Concatenate HTML partials
 gulp.task('concat', function() {
     var header = new Buffer(gulp.src('_src/html/partials/header.html'));
-    var footer = new Buffer(gulp.src('_src/html/partials/header.html'));
+    var footer = new Buffer(gulp.src('_src/html/partials/footer.html'));
     return gulp.src('_src/html/content/*.hmtl')
     .pipe(tap(function (file) {
         file.contents = Buffer.concat(
