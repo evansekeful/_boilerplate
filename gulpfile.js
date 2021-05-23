@@ -62,13 +62,14 @@ gulp.task('minify-js', function() {
 
 // Concatenate HTML partials
 gulp.task('concat', function() {
+    var header = new Buffer(gulp.src('_src/html/partials/header.html'));
+    var footer = new Buffer(gulp.src('_src/html/partials/header.html'));
     return gulp.src('_src/html/content/*.hmtl')
     .pipe(tap(function (file) {
         file.contents = Buffer.concat(
-            new Buffer(gulp.src('_src/html/partials/header.html')),
+            header,
             file.contents,
-            new Buffer(gulp.src('_src/html/partials/footer.html'))
-        )
+            footer)
       }))
     .pipe(gulp.dest('_src/html/staged'))
 });
