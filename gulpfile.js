@@ -10,7 +10,7 @@ var pkg = require('./package.json');
 // Set the banner content
 var banner = ['/*!\n',
     ' * <%= pkg.title %>: A Beastie Supported Production\n', 
-    ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n', // TODO add copyright date to json and use here
+    ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n',
     ' * Licensed under <%= pkg.license %> \n',
     ' */\n',
     ''
@@ -24,9 +24,6 @@ gulp.task('sass', function() {
         .pipe(gulp.dest('css'))
 });
 
-// Build Modernizr JS TODO
-
-
 // Minify compiled CSS TODO verify file paths; write to HTML file
 gulp.task('minify-css', gulp.series('sass', function() {
     return gulp.src('css/main.css')
@@ -37,8 +34,9 @@ gulp.task('minify-css', gulp.series('sass', function() {
 
 // Babel JS TODO
 
+// Build Modernizr JS TODO
 
-// Minify JS TODO verify file paths; write to HTML file
+// Minify JS TODO add plugins file; verify file paths; write to HTML file
 gulp.task('minify-js', function() {
     return gulp.src('js/main.js')
         .pipe(uglify())
