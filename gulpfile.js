@@ -36,22 +36,22 @@ gulp.task('fonts', function() {
 gulp.task('sass', function() {
     return gulp.src('./_src/sass/main.scss')
         .pipe(sass())
-        .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest('./_src/css'))
 });
 
-// Minify compiled CSS and copy into /_dist/css TODO write to HTML file
+// Minify compiled CSS and copy into /_dist/css 
 gulp.task('minify-css', gulp.series('fonts','sass', function() {
-    return gulp.src(['./_src/css/main.css','./_src/css/google-fonts.css'])
+    return gulp.src('./_src/css/*.css')
         .pipe(concat('main.css'))
+        .pipe(header(banner, { pkg: pkg }))
         .pipe(cleancss({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('./_dist/css'))
 }));
 
-// Minify JS and copy into /_dist/js TODO write to HTML file
+// Minify JS and copy into /_dist/js 
 gulp.task('minify-js', function() {
-    return gulp.src(['./_src/js/main.js','./_src/js/plugins.js'])
+    return gulp.src('./_src/js/*.js')
         .pipe(concat('main.js'))
         .pipe(uglify())
         .pipe(header(banner, { pkg: pkg }))
@@ -76,19 +76,23 @@ gulp.task('concat', function() {
         },
         removeTags: true
       }))
-    .pipe(prettify({indent_char: '  ', indent_size: 1}))
     .pipe(gulp.dest('./_src/html/staged'))
 });
 
-// Write HTML files and copy into /_dist
+// Write HTML files and copy into /_dist TODO inject scripts
 gulp.task('html', gulp.series('concat', function() {
     return gulp.src('./_src/html/staged/*.html')
     .pipe(ga({url: pkg.url, uid: pkg.ga}))
+    .pipe(prettify({indent_char: '  ', indent_size: 1}))
     .pipe(gulp.dest('./_dist'))
 }));
 
-// Copy staged HTML and vendor libraries from /node_modules into /_dist/vendor
+// Copy fonts, images, and vendor libraries into /_dist TODO fonts, images
 gulp.task('copy', async function() {
+    // Images
+
+    // Fonts
+
     // Bootstrap
     gulp.src(['node_modules/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
         .pipe(gulp.dest('./_dist/vendor/bootstrap'))
