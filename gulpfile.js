@@ -5,9 +5,8 @@ var sass = require('gulp-sass');
 var cleancss = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-var fs = require('fs')
-var tap = require('gulp-tap');
 var concat = require('gulp-concat');
+var prettify = require('gulp-html-prettify')
 var inject = require('gulp-inject');
 var ga = require('gulp-ga');
 var pkg = require('./package.json');
@@ -77,6 +76,7 @@ gulp.task('concat', function() {
         },
         removeTags: true
       }))
+    .pipe(prettify({indent_char: '  ', indent_size: 1}))
     .pipe(gulp.dest('./_src/html/staged'))
 });
 
