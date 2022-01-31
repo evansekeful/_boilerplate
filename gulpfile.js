@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var header = require('gulp-header');
 var del = require('del');
 var fonts = require('gulp-google-webfonts');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('node-sass'));
 var cleancss = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
@@ -110,16 +110,6 @@ gulp.task('copy', async function() {
     gulp.src('node_modules/modernizr/lib/**/*')
         .pipe(gulp.dest('./_dist/vendor/modernizr'))
     // ...add more
-
-    gulp.src([
-            'node_modules/font-awesome/**',
-            '!node_modules/font-awesome/**/*.map',
-            '!node_modules/font-awesome/.npmignore',
-            '!node_modules/font-awesome/*.txt',
-            '!node_modules/font-awesome/*.md',
-            '!node_modules/font-awesome/*.json'
-        ])
-        .pipe(gulp.dest('./_dist/vendor/font-awesome'))
 })
 
 // Run everything
