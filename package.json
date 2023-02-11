@@ -33,7 +33,7 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "node-sass": "^5.0.0",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.20",
     "popper.js": "^1.16.1",
     "pump": "^1.0.2"
   },
